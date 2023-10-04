@@ -4,13 +4,13 @@ services:
       dockerfile: Dockerfile
       context: .
     environment:
+      - APP_ADDRESS=:8080
       - DB_HOSTNAME=db
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=password
       - DB_NAME=eventing
       - DB_SCHEMA=public
-      - APP_ADDRESS=:8080
     ports:
       - 4001:8080
     restart: unless-stopped
