@@ -2,7 +2,7 @@ services:
   api:
     build:
       dockerfile: Dockerfile
-      context: .
+      context: src
     environment:
       - APP_ADDRESS=:8080
       - DB_HOSTNAME=db

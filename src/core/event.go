@@ -5,7 +5,7 @@ import (
 	"github.com/audriusdai/eventing-api/db"
 )
 
-func CreateEvent(event model.Event) (model.Event, error) {
+var CreateEvent = func(event model.Event) (model.Event, error) {
 	if r := db.DB.Create(&event); r.Error != nil {
 		return event, r.Error
 	}

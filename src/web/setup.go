@@ -14,13 +14,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupWeb() error {
+func SetupEngine() *gin.Engine {
 	engine := gin.New()
 	apiGroup := engine.Group("/api")
 
 	route.SetupRoutes(apiGroup)
 
-	server := &http.Server{Addr: config.APP_ADDRESS, Handler: engine}
+	return engine
+}
+
+func SetupWeb() error {
+	server := &http.Server{
+		Addr:    config.APP_ADDRESS,
+		Handler: SetupEngine(),
+	}
 
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
