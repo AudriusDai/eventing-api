@@ -18,6 +18,7 @@ _note: postgres database has to be running_
 
 ```
 # run the commands:
+cd src
 go mod tidy
 go run main.go
 
