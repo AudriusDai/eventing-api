@@ -10,10 +10,10 @@ import (
 var BindValidators = func() {
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		if err := v.RegisterValidation("datetimeRFC3339", validateDatetimeRFC3339); err != nil {
-			log.Fatal("failed to register datetime validation")
+			log.Fatal("failed to register `datetimeRFC3339` validation")
 		}
 		if err := v.RegisterValidation("languageISO6391", validateLanguageISO6391); err != nil {
-			log.Fatal("failed to register datetime validation")
+			log.Fatal("failed to register `languageISO6391` validation")
 		}
 
 	}
