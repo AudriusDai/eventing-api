@@ -6,6 +6,7 @@ import (
 
 	"github.com/audriusdai/eventing-api/core/model"
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,10 +26,10 @@ func TestDtoToModelEvent(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, input.Name, actual.Name)
 		assert.Equal(t, input.Date, actual.Date.Format(time.RFC3339))
-		assert.Equal(t, input.Languages, actual.Languages)
-		assert.Equal(t, input.VideoQuality, actual.VideoQuality)
-		assert.Equal(t, input.AudioQuality, actual.AudioQuality)
-		assert.Equal(t, input.Invitees, actual.Invitees)
+		assert.Equal(t, pq.StringArray(input.Languages), actual.Languages)
+		assert.Equal(t, pq.StringArray(input.VideoQuality), actual.VideoQuality)
+		assert.Equal(t, pq.StringArray(input.AudioQuality), actual.AudioQuality)
+		assert.Equal(t, pq.StringArray(input.Invitees), actual.Invitees)
 	})
 
 	t.Run("with invalid date, return error", func(t *testing.T) {
@@ -61,9 +62,9 @@ func TestModelToDtoEvent(t *testing.T) {
 		assert.Equal(t, input.Id, actual.Id)
 		assert.Equal(t, input.Name, actual.Name)
 		assert.Equal(t, input.Date.Format(time.RFC3339), actual.Date)
-		assert.Equal(t, input.Languages, actual.Languages)
-		assert.Equal(t, input.VideoQuality, actual.VideoQuality)
-		assert.Equal(t, input.AudioQuality, actual.AudioQuality)
-		assert.Equal(t, input.Invitees, actual.Invitees)
+		assert.Equal(t, input.Languages, pq.StringArray(actual.Languages))
+		assert.Equal(t, input.VideoQuality, pq.StringArray(actual.VideoQuality))
+		assert.Equal(t, input.AudioQuality, pq.StringArray(actual.AudioQuality))
+		assert.Equal(t, input.Invitees, pq.StringArray(actual.Invitees))
 	})
 }
