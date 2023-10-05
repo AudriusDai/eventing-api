@@ -16,7 +16,7 @@ type EventDto struct {
 	Name         string    `json:"name" binding:"required,max=256"`
 	Date         string    `json:"date" binding:"required,datetimeRFC3339"`
 	Languages    []string  `json:"languages" binding:"required,gt=0,dive,languageISO6391"`
-	VideoQuality []string  `json:"videoQuality" binding:"required,gt=0,dive,oneof=720p 1080p"`
+	VideoQuality []string  `json:"videoQuality" binding:"required,gt=0,dive,oneof=144p 240p 360p 480p 720p 1080p 1440p 2160p"`
 	AudioQuality []string  `json:"audioQuality" binding:"required,gt=0,dive,oneof=Low Medium High"`
 	Invitees     []string  `json:"invitees" binding:"required,gt=0,lte=100,dive,email"`
 	Description  string    `json:"description,omitempty" binding:"max=1024"`
