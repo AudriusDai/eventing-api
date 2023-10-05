@@ -10,14 +10,14 @@ import (
 )
 
 type EventDto struct {
-	Id           uuid.UUID `json:"id" binding:"uuid"`
+	Id           uuid.UUID `json:"id,omitempty"`
 	Name         string    `json:"name"`
 	Date         string    `json:"date"`      // should be utc timestampz
 	Languages    []string  `json:"languages"` // check if there is ISO validator for languages
 	VideoQuality []string  `json:"videoQuality"`
 	AudioQuality []string  `json:"audioQuality"`
-	Invitees     []string  `json:"invitees"`    // should have email validation
-	Description  string    `json:"description"` // length optional
+	Invitees     []string  `json:"invitees"`              // should have email validation
+	Description  *string   `json:"description,omitempty"` // length optional
 }
 
 func postEvent(app *gin.RouterGroup) {
