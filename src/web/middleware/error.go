@@ -6,13 +6,10 @@ import (
 	"strings"
 
 	"github.com/audriusdai/eventing-api/util"
+	weberrors "github.com/audriusdai/eventing-api/web/errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
-
-type WebResponseError struct {
-	ErrorMessage string `json:"error_message"`
-}
 
 func ErrorMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -27,11 +24,11 @@ func ErrorMiddleware() gin.HandlerFunc {
 
 		switch err := err.(type) {
 		case validator.ValidationErrors:
-			c.JSON(http.StatusBadRequest, WebResponseError{ErrorMessage: GetErrorText(err)})
+			c.JSON(http.StatusBadRequest, weberrors.WebErrorResponse{Description: GetErrorText(err)})
 			return
 		}
 
-		c.JSON(http.StatusInternalServerError, WebResponseError{ErrorMessage: "Something unexpected has happened.."})
+		c.JSON(http.StatusInternalServerError, weberrors.WebErrorResponseInternalServerError)
 	}
 }
 

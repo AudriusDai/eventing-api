@@ -8,7 +8,7 @@ import (
 
 	"github.com/audriusdai/eventing-api/core"
 	"github.com/audriusdai/eventing-api/core/model"
-	"github.com/audriusdai/eventing-api/web/middleware"
+	weberrors "github.com/audriusdai/eventing-api/web/errors"
 	"github.com/audriusdai/eventing-api/web/route"
 	"github.com/google/uuid"
 )
@@ -38,8 +38,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().Contains("`Name` is required")
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().Contains("`Name` is required")
 	})
 
 	t.Run("with incorrect date value, return bad request", func(t *testing.T) {
@@ -51,8 +51,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`this.is.not.a.date.in.here` is invalid date (RFC3339)")
 	})
 
@@ -65,8 +65,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`Languages` should be greater than 0")
 	})
 
@@ -79,10 +79,10 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`not.a.language.1` is invalid language (ISO6391)")
-		res.JSON().Object().Value("error_message").String().
+		res.JSON().Object().Value("description").String().
 			Contains("`not.a.language.2` is invalid language (ISO6391)")
 	})
 
@@ -95,8 +95,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`VideoQuality` should be greater than 0")
 	})
 
@@ -109,10 +109,10 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`not.a.video.quality.1` is invalid for field `VideoQuality[0]`")
-		res.JSON().Object().Value("error_message").String().
+		res.JSON().Object().Value("description").String().
 			Contains("`not.a.video.quality.2` is invalid for field `VideoQuality[2]`")
 	})
 
@@ -125,8 +125,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`AudioQuality` should be greater than 0")
 	})
 
@@ -139,8 +139,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`not.an.audio.quality` is invalid for field `AudioQuality[0]`")
 	})
 
@@ -153,8 +153,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`Invitees` should be greater than 0")
 	})
 
@@ -167,8 +167,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`this.is.not.an.email` is an invalid email")
 	})
 
@@ -181,8 +181,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`Invitees` should be less/equal than 100")
 	})
 
@@ -195,8 +195,8 @@ func TestPostEvent(t *testing.T) {
 			WithJSON(dto).
 			Expect()
 
-		res.Status(http.StatusBadRequest).JSON().Schema(middleware.WebResponseError{})
-		res.JSON().Object().Value("error_message").String().
+		res.Status(http.StatusBadRequest).JSON().Schema(weberrors.WebErrorResponse{})
+		res.JSON().Object().Value("description").String().
 			Contains("`Description` max size 1024.")
 	})
 
