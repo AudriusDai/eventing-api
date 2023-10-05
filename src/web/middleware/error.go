@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 
@@ -32,7 +31,6 @@ func ErrorMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		log.Printf("something unexpected has happened: `%v`", err.Error())
 		c.JSON(http.StatusInternalServerError, WebResponseError{ErrorMessage: "Something unexpected has happened.."})
 	}
 }
