@@ -10,14 +10,17 @@ import (
 	"time"
 
 	"github.com/audriusdai/eventing-api/config"
+	"github.com/audriusdai/eventing-api/web/middleware"
 	"github.com/audriusdai/eventing-api/web/route"
+	"github.com/audriusdai/eventing-api/web/validation"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupEngine() *gin.Engine {
 	engine := gin.New()
+	engine.Use(middleware.ErrorMiddleware())
+	validation.BindValidators()
 	apiGroup := engine.Group("/api")
-
 	route.SetupRoutes(apiGroup)
 
 	return engine

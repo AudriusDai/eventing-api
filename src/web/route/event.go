@@ -11,13 +11,13 @@ import (
 
 type EventDto struct {
 	Id           uuid.UUID `json:"id,omitempty"`
-	Name         string    `json:"name"`
-	Date         string    `json:"date"`      // should be utc timestampz
-	Languages    []string  `json:"languages"` // check if there is ISO validator for languages
-	VideoQuality []string  `json:"videoQuality"`
-	AudioQuality []string  `json:"audioQuality"`
-	Invitees     []string  `json:"invitees"`              // should have email validation
-	Description  *string   `json:"description,omitempty"` // length optional
+	Name         string    `json:"name" binding:"required,max=256"`
+	Date         string    `json:"date" binding:"required,datetimeRFC3339"`
+	Languages    []string  `json:"languages" binding:"required,gt=0,dive,languageISO6391"`
+	VideoQuality []string  `json:"videoQuality" binding:"required,gt=0,dive,oneof=720p 1080p"`
+	AudioQuality []string  `json:"audioQuality" binding:"required,gt=0,dive,oneof=Low Medium High"`
+	Invitees     []string  `json:"invitees" binding:"required,gt=0,lte=100,dive,email"`
+	Description  string    `json:"description,omitempty" binding:"max=1024"`
 }
 
 func postEvent(app *gin.RouterGroup) {
