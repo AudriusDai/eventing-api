@@ -1,7 +1,9 @@
 package route
 
 import (
+	"errors"
 	"net/http"
+	"time"
 
 	"github.com/audriusdai/eventing-api/core"
 	"github.com/audriusdai/eventing-api/core/model"
@@ -26,14 +28,18 @@ func postEvent(app *gin.RouterGroup) {
 
 func postEventFunc(ctx *gin.Context) {
 	dto := EventDto{}
-
 	if err := ctx.ShouldBindJSON(&dto); err != nil {
 		ctx.Error(err)
 		return
 	}
 
-	result, err := core.CreateEvent(dtoToModelEvent(dto))
+	m, err := dtoToModelEvent(dto)
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
 
+	result, err := core.CreateEvent(m)
 	if err != nil {
 		ctx.Error(err)
 		return
@@ -42,17 +48,33 @@ func postEventFunc(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, modelToDtoEvent(result))
 }
 
-func dtoToModelEvent(d EventDto) model.Event {
-	// todo: map properly
-	return model.Event{
-		Name: d.Name,
+func dtoToModelEvent(d EventDto) (model.Event, error) {
+	date, err := time.Parse(time.RFC3339, d.Date)
+
+	if err != nil {
+		return model.Event{}, errors.Join(err, errors.New("failed to parse date field"))
 	}
+
+	return model.Event{
+		Name:         d.Name,
+		Date:         date,
+		Languages:    d.Languages,
+		VideoQuality: d.VideoQuality,
+		AudioQuality: d.AudioQuality,
+		Invitees:     d.Invitees,
+		Description:  d.Description,
+	}, nil
 }
 
 func modelToDtoEvent(m model.Event) EventDto {
-	// todo: map properly
 	return EventDto{
-		Id:   m.Id,
-		Name: m.Name,
+		Id:           m.Id,
+		Name:         m.Name,
+		Date:         m.Date.Format(time.RFC3339),
+		Languages:    m.Languages,
+		VideoQuality: m.VideoQuality,
+		AudioQuality: m.AudioQuality,
+		Invitees:     m.Invitees,
+		Description:  m.Description,
 	}
 }
