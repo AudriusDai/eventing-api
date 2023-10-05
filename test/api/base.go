@@ -8,7 +8,7 @@ import (
 	"github.com/gavv/httpexpect"
 )
 
-func testClient(t *testing.T) *httpexpect.Expect { //nolint
+func testClient(t *testing.T) *httpexpect.Expect {
 	engine := web.SetupEngine()
 
 	e := httpexpect.WithConfig(httpexpect.Config{
